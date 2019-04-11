@@ -3,6 +3,8 @@
 #include <QQuickWindow>
 #include <QScreen>
 
+#include "obsclient.h"
+
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -15,6 +17,8 @@ int main(int argc, char *argv[])
     } else {
         QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
     }
+
+    OBSClient *client = new OBSClient();
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
