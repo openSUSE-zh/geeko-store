@@ -22,10 +22,26 @@ void RPMPackageList::search(QString keywords)
 
 void RPMPackageList::parse()
 {
+    QList<RPMPackage> binaries;
+    QStringList packages;
     QString body = reply->readAll();
-    qDebug() << reply->error() << body;
     QXmlStreamReader xml(body);
+    xml.readNextStartElement();
+    if (xml.name() == "collection") {
+        while (xml.readNextStartElement()) {
+            if (xml.name() == "binary") {
+                RPMPackage rpm(xml.attributes());
+                binaries << rpm;
+                if (!packages.contains(rpm.getName())) {
+                    packages << rpm.getName();
+                }
+                xml.readElementText();
+            } else {
+                xml.skipCurrentElement();
+            }
+        }
+    }
 
 
-    //emit parsed();
+    emit parsed(binaries, packages);
 }

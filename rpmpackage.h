@@ -2,6 +2,9 @@
 #define RPMPACKAGE_H
 
 #include <QObject>
+#include <QXmlStreamAttributes>
+
+#include "obsinstance.h"
 
 class RPMPackage : public QObject
 {
@@ -18,10 +21,15 @@ class RPMPackage : public QObject
     Q_PROPERTY(QString filePath READ getFilePath WRITE setFilePath NOTIFY filePathChanged)
     Q_PROPERTY(QString baseProject READ getBaseProject WRITE setBaseProject NOTIFY baseProjectChanged)
     Q_PROPERTY(QString type READ getType WRITE setType NOTIFY typeChanged)
-    Q_PROPERTY(QString obsInstance READ getObsInstance WRITE setObsInstance NOTIFY obsInstanceChanged)
+    Q_PROPERTY(const OBSInstance *obsInstance READ getObsInstance WRITE setObsInstance NOTIFY obsInstanceChanged)
 
 public:
-    explicit RPMPackage(QObject *parent = nullptr);
+    RPMPackage(QObject *parent = nullptr);
+    RPMPackage(const QXmlStreamAttributes attributes, const OBSInstance *obsInstance = nullptr, QObject *parent = nullptr);
+    RPMPackage(const RPMPackage& other, QObject *parent = nullptr);
+    RPMPackage& operator=(const RPMPackage& other);
+
+    void copy(const RPMPackage& other);
 
     QString getName();
     void setName(QString name);
@@ -56,11 +64,10 @@ public:
     QString getType();
     void setType(QString type);
 
-    QString getObsInstance();
-    void setObsInstance(QString obsInstance);
+    const OBSInstance* getObsInstance();
+    void setObsInstance(const OBSInstance *obsInstance);
 
 signals:
-
     void nameChanged(QString name);
     void projectChanged(QString project);
     void packageChanged(QString package);
@@ -72,7 +79,7 @@ signals:
     void filePathChanged(QString filePath);
     void baseProjectChanged(QString baseProject);
     void typeChanged(QString type);
-    void obsInstanceChanged(QString obsInstance);
+    void obsInstanceChanged(const OBSInstance *obsInstance);
 
 public slots:
 
@@ -88,7 +95,7 @@ private:
     QString filePath;
     QString baseProject;
     QString type;
-    QString obsInstance;
+    const OBSInstance *obsInstance;
 };
 
 #endif // RPMPACKAGE_H

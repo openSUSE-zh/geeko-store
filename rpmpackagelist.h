@@ -14,7 +14,7 @@ public:
 
 signals:
     void progress(qint64 bytesRead, qint64 totalBytes);
-    //void parsed(QList<RPMPackage> binaries, QStringList packages);
+    void parsed(QList<RPMPackage> binaries, QStringList packages);
 
 public slots:
     void parse();
