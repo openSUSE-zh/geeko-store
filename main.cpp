@@ -3,7 +3,8 @@
 #include <QQuickWindow>
 #include <QScreen>
 
-#include "obsclient.h"
+#include "obsinstance.h"
+#include "rpmpackagelist.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,7 +19,8 @@ int main(int argc, char *argv[])
         QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
     }
 
-    OBSClient *client = new OBSClient();
+    RPMPackageList rpmList(OBSInstance::PMBS);
+    rpmList.search("vlc");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
