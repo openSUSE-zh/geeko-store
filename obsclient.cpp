@@ -24,27 +24,25 @@ OBSClient::OBSClient(OBSInstance *obsInstance, QObject *parent) : QObject(parent
     this->manager = new QNetworkAccessManager(this);
 }
 
-QNetworkReply* OBSClient::searchBinary(QStringList keywords, QString distribution)
+QNetworkReply* OBSClient::searchBinary(QStringList keywords, QString baseProject)
 {
     QUrl url = obsInstance->getApiRootUrl();
     url.setPath(BINARY_SEARCH_PATH);
     QUrlQuery query;
-    QString names = QString("'") + keywords.join(QString(", ")) + QString("'");
-    QString xpath = QString("contains-ic(@name, %1) and path/project='%2'").arg(names).arg(distribution);
-    query.addQueryItem(QString("match"), QString(QUrl(xpath).toEncoded()));
+    QString names = QString("'") + keywords.join(QString(",")) + QString("'");
+    QString xpath = QString("contains-ic(@name,%1) and path/project='%2'").arg(names).arg(obsInstance->getDistPrefix() + baseProject);
+    query.addQueryItem(QString("match"), QUrl::toPercentEncoding(xpath));
     url.setQuery(query);
-    qDebug() << url.toEncoded();
-    QUrl proxyUrl = getProxyUrl(url);
+    QUrl proxyUrl = getProxyUrl(url.toEncoded());
     return manager->get(QNetworkRequest(proxyUrl));
 }
 
-QUrl OBSClient::getProxyUrl(QUrl url)
+QUrl OBSClient::getProxyUrl(QString url)
 {
     QUrlQuery query;
-    query.addQueryItem(QString("obs_api_link"), QString(url.toEncoded()));
     query.addQueryItem(QString("obs_instance"), obsInstance->getName());
+    query.addQueryItem(QString("obs_api_link"), QUrl::toPercentEncoding(url));
     QUrl proxyUrl(PROXY_URL);
     proxyUrl.setQuery(query);
-    qDebug() << query.toString();
     return proxyUrl;
 }

@@ -12,7 +12,7 @@ class OBSClient : public QObject
 public:
     explicit OBSClient(OBSInstance *obsInstance, QObject *parent = nullptr);
 
-    QNetworkReply* searchBinary(QStringList keywords, QString distribution);
+    QNetworkReply* searchBinary(QStringList keywords, QString baseProject);
 
 private:
     QNetworkAccessManager *manager;
@@ -20,7 +20,7 @@ private:
 
     static const QUrl PROXY_URL;
     static const QString BINARY_SEARCH_PATH;
-    QUrl getProxyUrl(QUrl url);
+    QUrl getProxyUrl(QString url);
 };
 
 #endif // OBSCLIENT_H
