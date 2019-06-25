@@ -1,5 +1,5 @@
 import QtQuick 2.9
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.5
 
 Page {
     width: 300
@@ -43,19 +43,17 @@ Page {
 
     ScrollView {
         anchors.top: searchBar.bottom
-        anchors.bottom: parent.bottom
         width: parent.width
         height: parent.height - searchBar.height
+        clip: true
 
-        Item {
+        Column {
             width: parent.width
             height: childrenRect.height
 
             Label {
                 id: obsLabel
-                anchors.top: parent.top
                 width: parent.width
-                padding: 10
                 text: "openSUSE"
                 background: Rectangle {
                     color: "yellow"
@@ -64,7 +62,6 @@ Page {
 
             ListView {
                 id: obsList
-                anchors.top: obsLabel.bottom
                 width: parent.width
                 height: childrenRect.height
                 model: ["hello", "world"]
@@ -78,9 +75,7 @@ Page {
 
             Label {
                 id: pmbsLabel
-                anchors.top: obsList.bottom
                 width: parent.width
-                padding: 10
                 text: "Packman"
                 background: Rectangle {
                     color: "#eeeeee"
@@ -89,7 +84,6 @@ Page {
 
             ListView {
                 id: pmbsList
-                anchors.top: pmbsLabel.bottom
                 width: parent.width
                 height: childrenRect.height
                 model: ["foo", "bar"]
