@@ -14,7 +14,7 @@ public:
 
 signals:
     void progress(qint64 bytesRead, qint64 totalBytes);
-    void parsed(QList<RPMPackage> binaries, QStringList packages);
+    void parsed(QVariantList binaries, QStringList packages);
 
 public slots:
     void parse();
@@ -24,6 +24,8 @@ public slots:
 private:
     OBSClient *obs;
     QNetworkReply *reply;
+    QVariantList binaries;
+    QStringList packages;
 };
 
 #endif // RPMPACKAGELIST_H

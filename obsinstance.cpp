@@ -1,6 +1,6 @@
 #include "obsinstance.h"
 
-OBSInstance* OBSInstance::OBS = new OBSInstance(QString("openSUSE"), QUrl("https://build.opensuse.org/"), QUrl("https://download.opensuse.org/repositories/%1/%2/%1.repo"));
+OBSInstance* OBSInstance::OBS = new OBSInstance(QString("openSUSE"), QUrl("https://api.opensuse.org/"), QUrl("https://download.opensuse.org/repositories/%1/%2/%1.repo"));
 OBSInstance* OBSInstance::PMBS = new OBSInstance(QString("Packman"), QUrl("https://pmbs.links2linux.de/"), QUrl("https://ftp.gwdg.de/pub/linux/misc/packman/suse/%2/packman.repo"), QString("openSUSE.org:"));
 
 /**
