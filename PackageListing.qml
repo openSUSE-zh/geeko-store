@@ -35,7 +35,9 @@ Page {
 
                 onClicked: {
                     obsClient.search(searchInput.text);
+                    obsLoading.running = true;
                     pmbsClient.search(searchInput.text);
+                    pmbsLoading.running = true;
                 }
             }
         }
@@ -55,8 +57,18 @@ Page {
                 id: obsLabel
                 width: parent.width
                 text: "openSUSE"
+                horizontalAlignment: Text.AlignHCenter
+                padding: 5
                 background: Rectangle {
-                    color: "yellow"
+                    color: "#eeeeee"
+                }
+
+                BusyIndicator {
+                    id: obsLoading
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                    running: false
                 }
             }
 
@@ -64,7 +76,6 @@ Page {
                 id: obsList
                 width: parent.width
                 height: childrenRect.height
-                model: ["hello", "world"]
 
                 delegate: ItemDelegate {
                     text: modelData
@@ -77,8 +88,18 @@ Page {
                 id: pmbsLabel
                 width: parent.width
                 text: "Packman"
+                horizontalAlignment: Text.AlignHCenter
+                padding: 5
                 background: Rectangle {
                     color: "#eeeeee"
+                }
+
+                BusyIndicator {
+                    id: pmbsLoading
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                    running: false
                 }
             }
 
@@ -86,7 +107,6 @@ Page {
                 id: pmbsList
                 width: parent.width
                 height: childrenRect.height
-                model: ["foo", "bar"]
 
                 delegate: ItemDelegate {
                     text: modelData
@@ -106,6 +126,7 @@ Page {
 
         onSearchResultParsed: {
             obsList.model = packages;
+            obsLoading.running = false;
             console.log(packages);
         }
     }
@@ -119,6 +140,7 @@ Page {
 
         onSearchResultParsed: {
             pmbsList.model = packages;
+            pmbsLoading.running = false;
             console.log(packages);
         }
     }
