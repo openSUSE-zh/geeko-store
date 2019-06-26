@@ -153,3 +153,53 @@ void RPMPackage::setObsInstance(const OBSInstance* obsInstance) {
     this->obsInstance = obsInstance;
     emit obsInstanceChanged(obsInstance);
 }
+
+RPMPackage::ProjectType RPMPackage::getProjectType()
+{
+    if (project.left(9) == "openSUSE:") {
+        return OfficialProject;
+    }
+
+    if (project.left(5) == "home:") {
+        return PersonalProject;
+    }
+
+    if (project.left(4) == "isv:") {
+        return VendorProject;
+    }
+
+    return DevelopmentProject;
+}
+
+RPMPackage::PackageType RPMPackage::getPackageType()
+{
+    if (arch == "src") {
+        return SourcePackage;
+    }
+
+    if (name.left(3) == "lib") {
+        return LibraryPackage;
+    }
+
+    if (name.right(4) == "-doc" || name.right(5) == "-docs") {
+        return DocumentPackage;
+    }
+
+    if (name.right(5) == "-lang") {
+        return LanguagePackage;
+    }
+
+    if (name.right(5) == "-font" || name.right(6) == "-fonts") {
+        return FontPackage;
+    }
+
+    if (name.right(6) == "-devel") {
+        return DevelopmentPackage;
+    }
+
+    if (name.right(6) == "-debuginfo") {
+        return DebugInfoPackage;
+    }
+
+    return NormalPackage;
+}

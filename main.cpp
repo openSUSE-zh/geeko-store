@@ -4,9 +4,9 @@
 #include <QQuickWindow>
 #include <QScreen>
 
+#include "obsclient.h"
 #include "obsinstance.h"
 #include "rpmpackage.h"
-#include "rpmpackagelist.h"
 
 int main(int argc, char *argv[])
 {
@@ -25,11 +25,11 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<RPMPackage>("GeekoStore", 1, 0, "RPMPackageModel");
 
-    RPMPackageList obsList(OBSInstance::OBS);
-    RPMPackageList pmbsList(OBSInstance::PMBS);
+    OBSClient obsClient(OBSInstance::OBS);
+    OBSClient pmbsClient(OBSInstance::PMBS);
 
-    engine.rootContext()->setContextProperty("obsListModel", &obsList);
-    engine.rootContext()->setContextProperty("pmbsListModel", &pmbsList);
+    engine.rootContext()->setContextProperty("obsClient", &obsClient);
+    engine.rootContext()->setContextProperty("pmbsClient", &pmbsClient);
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())

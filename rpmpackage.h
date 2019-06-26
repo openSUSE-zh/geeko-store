@@ -22,12 +22,19 @@ class RPMPackage : public QObject
     Q_PROPERTY(QString baseProject READ getBaseProject WRITE setBaseProject NOTIFY baseProjectChanged)
     Q_PROPERTY(QString type READ getType WRITE setType NOTIFY typeChanged)
     Q_PROPERTY(const OBSInstance *obsInstance READ getObsInstance WRITE setObsInstance NOTIFY obsInstanceChanged)
+    Q_PROPERTY(ProjectType projectType READ getProjectType)
+    Q_PROPERTY(PackageType packageType READ getPackageType)
 
 public:
     RPMPackage(QObject *parent = nullptr);
     RPMPackage(const QXmlStreamAttributes attributes, const OBSInstance *obsInstance = nullptr, QObject *parent = nullptr);
     RPMPackage(const RPMPackage& other, QObject *parent = nullptr);
     RPMPackage& operator=(const RPMPackage& other);
+
+    enum ProjectType { OfficialProject, DevelopmentProject, PersonalProject, VendorProject };
+    Q_ENUM(ProjectType)
+    enum PackageType { NormalPackage, LibraryPackage, LanguagePackage, DocumentPackage, FontPackage, DevelopmentPackage, DebugInfoPackage, SourcePackage };
+    Q_ENUM(PackageType)
 
     void copy(const RPMPackage& other);
 
@@ -66,6 +73,9 @@ public:
 
     const OBSInstance* getObsInstance();
     void setObsInstance(const OBSInstance *obsInstance);
+
+    ProjectType getProjectType();
+    PackageType getPackageType();
 
 signals:
     void nameChanged(QString name);

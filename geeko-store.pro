@@ -15,7 +15,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     obsclient.cpp \
-    rpmpackagelist.cpp \
     rpmpackage.cpp \
     obsinstance.cpp
 
@@ -34,6 +33,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     obsclient.h \
-    rpmpackagelist.h \
     rpmpackage.h \
     obsinstance.h

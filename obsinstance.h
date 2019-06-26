@@ -11,7 +11,6 @@ class OBSInstance : public QObject
     Q_PROPERTY(QString name READ getName)
     Q_PROPERTY(QUrl apiRootUrl READ getApiRootUrl)
     Q_PROPERTY(QUrl repoRootUrl READ getRepoRootUrl)
-    Q_PROPERTY(QUrl repoRootUrl READ getRepoRootUrl)
 
 public:
     explicit OBSInstance(QString name, QUrl apiRootUrl, QUrl repoRootUrl, QString distPrefix = "", QObject *parent = nullptr);

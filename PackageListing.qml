@@ -34,8 +34,8 @@ Page {
                 text: qsTr("Search")
 
                 onClicked: {
-                    obsListModel.search(searchInput.text);
-                    pmbsListModel.search(searchInput.text);
+                    obsClient.search(searchInput.text);
+                    pmbsClient.search(searchInput.text);
                 }
             }
         }
@@ -98,26 +98,26 @@ Page {
     }
 
     Connections {
-        target: obsListModel
+        target: obsClient
 
-        onProgress: {
+        onSearchProgress: {
             //
         }
 
-        onParsed: {
+        onSearchResultParsed: {
             obsList.model = packages;
             console.log(packages);
         }
     }
 
     Connections {
-        target: pmbsListModel
+        target: pmbsClient
 
-        onProgress: {
+        onSearchProgress: {
             //
         }
 
-        onParsed: {
+        onSearchResultParsed: {
             pmbsList.model = packages;
             console.log(packages);
         }
