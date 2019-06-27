@@ -14,7 +14,7 @@ ApplicationWindow {
 
         PackageListing {
             id: listing
-            width: 300
+            width: 400
             height: window.height
         }
 

@@ -2,10 +2,12 @@
 #define OBSCLIENT_H
 
 #include <QObject>
+#include <QQmlListProperty>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
 #include "obsinstance.h"
+#include "rpmpackage.h"
 
 class OBSClient : public QObject
 {
@@ -15,8 +17,7 @@ public:
     explicit OBSClient(OBSInstance *obsInstance, QObject *parent = nullptr);
 
 signals:
-    void searchProgress(qint64 bytesRead, qint64 totalBytes);
-    void searchResultParsed(QVariantList binaries, QStringList packages);
+    void searchResultParsed(QVector<RPMPackage*> packages);
 
 public slots:
     void search(QStringList keywords);
@@ -30,6 +31,7 @@ private:
 
     static const QUrl PROXY_URL;
     static const QString BINARY_SEARCH_PATH;
+
     QUrl getProxyUrl(QString url);
 };
 

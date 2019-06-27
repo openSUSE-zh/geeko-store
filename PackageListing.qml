@@ -32,21 +32,21 @@ Page {
             Button {
                 id: searchButton
                 text: qsTr("Search")
+                enabled: searchInput.text.length > 0
 
                 onClicked: {
-                    obsClient.search(searchInput.text);
-                    obsLoading.running = true;
-                    pmbsClient.search(searchInput.text);
-                    pmbsLoading.running = true;
+                    rpmPackageListModel.search(searchInput.text);
                 }
             }
         }
     }
 
     ScrollView {
+        id: firstColumn
         anchors.top: searchBar.bottom
-        width: parent.width
-        height: parent.height - searchBar.height
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: secondColumn.left
         clip: true
 
         Column {
@@ -54,9 +54,8 @@ Page {
             height: childrenRect.height
 
             Label {
-                id: obsLabel
                 width: parent.width
-                text: "openSUSE"
+                text: "RPM packages (OBS, Packman)"
                 horizontalAlignment: Text.AlignHCenter
                 padding: 5
                 background: Rectangle {
@@ -64,30 +63,33 @@ Page {
                 }
 
                 BusyIndicator {
-                    id: obsLoading
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.right: parent.right
-                    running: false
+                    running: rpmPackageListModel.isSearching
                 }
             }
 
             ListView {
-                id: obsList
                 width: parent.width
                 height: childrenRect.height
+
+                model: rpmPackageListModel.names
 
                 delegate: ItemDelegate {
                     text: modelData
                     width: parent.width
-                    onClicked: console.log("clicked:", modelData)
+                    highlighted: rpmPackageListModel.selectedName === modelData
+                    onClicked: {
+                        rpmPackageListModel.selectedName = modelData
+                        console.log(rpmPackageListModel.selectedName)
+                    }
                 }
             }
 
             Label {
-                id: pmbsLabel
                 width: parent.width
-                text: "Packman"
+                text: "Flatpak (FlatHub.org)"
                 horizontalAlignment: Text.AlignHCenter
                 padding: 5
                 background: Rectangle {
@@ -95,7 +97,6 @@ Page {
                 }
 
                 BusyIndicator {
-                    id: pmbsLoading
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
                     anchors.right: parent.right
@@ -104,44 +105,96 @@ Page {
             }
 
             ListView {
-                id: pmbsList
                 width: parent.width
                 height: childrenRect.height
+
+                model: ["foo", "bar"]
 
                 delegate: ItemDelegate {
                     text: modelData
                     width: parent.width
-                    onClicked: console.log("clicked:", modelData)
+                }
+            }
+
+            Label {
+                width: parent.width
+                text: "Snap (Snap Store)"
+                horizontalAlignment: Text.AlignHCenter
+                padding: 5
+                background: Rectangle {
+                    color: "#eeeeee"
+                }
+
+                BusyIndicator {
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                    running: false
+                }
+            }
+
+            ListView {
+                width: parent.width
+                height: childrenRect.height
+
+                model: ["foo", "bar"]
+
+                delegate: ItemDelegate {
+                    text: modelData
+                    width: parent.width
+                }
+            }
+
+            Label {
+                width: parent.width
+                text: "AppImage (Vendor Websites)"
+                horizontalAlignment: Text.AlignHCenter
+                padding: 5
+                background: Rectangle {
+                    color: "#eeeeee"
+                }
+
+                BusyIndicator {
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                    running: false
+                }
+            }
+
+            ListView {
+                width: parent.width
+                height: childrenRect.height
+
+                model: ["foo", "bar"]
+
+                delegate: ItemDelegate {
+                    text: modelData
+                    width: parent.width
                 }
             }
         }
     }
 
-    Connections {
-        target: obsClient
+    ScrollView {
+        id: secondColumn
+        anchors.top: searchBar.bottom
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        width: rpmPackageListModel.selectedName ? parent.width / 2 : 0
+        clip: true;
 
-        onSearchProgress: {
-            //
-        }
+        ListView {
+            model: rpmPackageListModel.packages
 
-        onSearchResultParsed: {
-            obsList.model = packages;
-            obsLoading.running = false;
-            console.log(packages);
-        }
-    }
-
-    Connections {
-        target: pmbsClient
-
-        onSearchProgress: {
-            //
-        }
-
-        onSearchResultParsed: {
-            pmbsList.model = packages;
-            pmbsLoading.running = false;
-            console.log(packages);
+            delegate: ItemDelegate {
+                text: modelData.project
+                width: parent.width
+                highlighted: modelData.project === rpmPackageListModel.selectedPackage.project
+                onClicked: {
+                    rpmPackageListModel.selectedPackage = modelData
+                }
+            }
         }
     }
 }

@@ -35,7 +35,6 @@ void OBSClient::search(QStringList keywords)
 
     searchReply = manager->get(QNetworkRequest(proxyUrl));
 
-    connect(searchReply, &QNetworkReply::downloadProgress, this, &OBSClient::searchProgress);
     connect(searchReply, &QNetworkReply::finished, this, &OBSClient::parseSearchResult);
 }
 
@@ -46,8 +45,7 @@ void OBSClient::search(QString keywords)
 
 void OBSClient::parseSearchResult()
 {
-    QVariantList binaries;
-    QStringList packages;
+    QVector<RPMPackage*> packages;
     QString body = searchReply->readAll();
     QXmlStreamReader xml(body);
     xml.readNextStartElement();
@@ -55,20 +53,14 @@ void OBSClient::parseSearchResult()
         while (xml.readNextStartElement()) {
             if (xml.name() == "binary") {
                 RPMPackage *rpm = new RPMPackage(xml.attributes());
-                QVariant var;
-                var.setValue(rpm);
-                binaries << var;
-                if (!packages.contains(rpm->getName())) {
-                    packages << rpm->getName();
-                }
+                packages << rpm;
                 xml.readElementText();
             } else {
                 xml.skipCurrentElement();
             }
         }
     }
-
-    emit searchResultParsed(binaries, packages);
+    emit searchResultParsed(packages);
 }
 
 
