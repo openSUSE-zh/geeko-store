@@ -2,6 +2,8 @@
 
 Native app store with same function of software.opensuse.org
 
+![Screenshot](./screenshot.png)
+
 ## Why make it?
 
 It is fun!
