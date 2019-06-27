@@ -8,6 +8,12 @@ It is fun!
 
 ## Technology
 
+### API: OBS, PMBS, FlatHub
+
+First goal is to support OBS and PMBS.
+
+Then try to add support of FlatHub.org, Snap Store, etc.
+
 ### Package management: Zypper / Libzypp
 
 PackageKit doesn't provide some key features like manage repositories. And it is
